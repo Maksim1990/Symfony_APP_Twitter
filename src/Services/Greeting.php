@@ -15,14 +15,16 @@ class Greeting
 {
 
     private $logger;
-    public function __construct(LoggerInterface $logger)
+    private $message;
+    public function __construct(LoggerInterface $logger,string $message)
     {
         $this->logger=$logger;
+        $this->message=$message;
     }
 
     public function greet(string $message):string {
         $this->logger->info("Greeted ".$message);
-        return "Hello $message";
+        return "{$this->message} $message";
     }
 
 }
