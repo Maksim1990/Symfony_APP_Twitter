@@ -5,7 +5,7 @@
     {% for id,post in posts %}
 <li>
     <p><b>Title:</b>
-        <a href="{{ path('blog_show',{'id':id}) }}">{{ post.title }}</a></p>
+        <a href="{{ path('blog_show',{'id':id}) }}">{{ post.title|upper}}</a></p>
     <p><b>Id:</b>{{ id }}</p>
     <p><b>Text:</b>{{ post.text }}</p>
 </li>
