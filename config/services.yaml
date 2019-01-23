@@ -6,6 +6,7 @@
 parameters:
     locale: 'en'
     hello_message: 'Hello from'
+    message: 'Test message'
 
 services:
     # default configuration for services in *this* file
@@ -35,6 +36,9 @@ services:
 #    App\Services\Greeting:
 #        arguments:
 #            $message: '%hello_message%'
+    App\Twig\AppExtensions:
+        arguments:
+            $message: '%hello_message%'
 
 
     # add more service definitions when explicit configuration is needed

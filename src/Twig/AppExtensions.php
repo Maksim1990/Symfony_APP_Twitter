@@ -10,10 +10,19 @@ namespace App\Twig;
 
 
 use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
 
-class AppExtensions extends AbstractExtension
+class AppExtensions extends AbstractExtension implements GlobalsInterface
 {
+
+    private $message;
+
+    public function __construct($message)
+    {
+        $this->message = $message;
+    }
+
     public function getFilters()
     {
         return [
@@ -28,5 +37,17 @@ class AppExtensions extends AbstractExtension
 
     public function addSalt($text){
         return $text." some salt";
+    }
+
+    /**
+     * Returns a list of global variables to add to the existing list.
+     *
+     * @return array An array of global variables
+     */
+    public function getGlobals()
+    {
+        return [
+            'test_twig_message'=>$this->message
+        ];
     }
 }
