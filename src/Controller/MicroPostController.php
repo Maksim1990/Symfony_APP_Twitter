@@ -22,7 +22,7 @@ class MicroPostController extends AbstractController
     {
         $posts = $this->getDoctrine()
             ->getRepository(MicroPost::class)
-            ->findAllDescending();
+            ->findAllGreaterThanIdSQL(7);
 
         return $this->render('micro_post/index.html.twig', [
             'posts' => $posts,

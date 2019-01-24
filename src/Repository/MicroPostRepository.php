@@ -24,6 +24,41 @@ class MicroPostRepository extends ServiceEntityRepository
         return $this->findBy(array(), array('id' => 'DESC'));
     }
 
+
+    //-- EXAMPLE OF DQL QUERY
+    public function findAllGreaterThanId($id): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p
+        FROM App\Entity\MicroPost p
+        WHERE p.id > :id
+        ORDER BY p.id DESC'
+        )->setParameter('id', $id);
+
+        // returns an array of Product objects
+        return $query->execute();
+    }
+
+    //-- EXAMPLE OF PLAIN SQL QUERY
+    public function findAllGreaterThanIdSQL($id): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT * FROM micro_post p
+        WHERE p.id > :id
+        ORDER BY p.id DESC
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAll();
+    }
+
+
     // /**
     //  * @return MicroPost[] Returns an array of MicroPost objects
     //  */
