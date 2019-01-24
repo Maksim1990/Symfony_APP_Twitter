@@ -3,6 +3,9 @@
 {% block title %}Post Create{% endblock %}
 
 {% block body %}
+    <small class="d-block text-right mt-3">
+        <a href="{{ path('micro_post_index') }}">Back</a>
+    </small>
     {{ form_start(form) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}

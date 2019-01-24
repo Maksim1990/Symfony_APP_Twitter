@@ -29,6 +29,7 @@ class MicroPostController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/add", name="micro_post_add")
      */
@@ -51,6 +52,54 @@ class MicroPostController extends AbstractController
 
         return $this->render('micro_post/create.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="micro_post_edit")
+     */
+    public function edit(MicroPost $microPost,Request $request)
+    {
+
+        $form=$this->createForm(MicroPostType::class,$microPost);
+        $form->handleRequest($request);
+
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em=$this->getDoctrine()->getManager();
+            $em->flush();
+
+            return   $this->redirectToRoute('micro_post_index');
+        }
+
+        return $this->render('micro_post/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
+     * @Route("/delete/{id}", name="micro_post_delete")
+     */
+    public function delete(MicroPost $microPost)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $em->remove($microPost);
+        $em->flush();
+        $this->addFlash('notice', 'Micro post was deleted');
+
+        return   $this->redirectToRoute('micro_post_index');
+    }
+    /**
+     * @Route("/{id}", name="micro_post_show")
+     */
+    public function show(MicroPost $microPost)
+    {
+//        $microPost = $this->getDoctrine()
+//            ->getRepository(MicroPost::class)
+//            ->find($id);
+        return $this->render('micro_post/show.html.twig', [
+            'post' => $microPost,
         ]);
     }
 }
