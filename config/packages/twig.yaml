@@ -4,3 +4,4 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         message_twig: 'Test message'
+    form_themes: ['bootstrap_4_layout.html.twig']
