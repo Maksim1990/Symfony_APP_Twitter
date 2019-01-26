@@ -39,12 +39,14 @@ class MicroPostController extends AbstractController
 
         $microPost=new MicroPost();
         $microPost->setTime(new \DateTime());
+        $user= $this->getUser();
 
         $form=$this->createForm(MicroPostType::class,$microPost);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
             $em=$this->getDoctrine()->getManager();
+            $microPost->setUser($user);
             $em->persist($microPost);
             $em->flush();
 
