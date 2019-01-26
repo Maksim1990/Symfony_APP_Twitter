@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\MicroPost;
 use App\Form\MicroPostType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,6 +58,7 @@ class MicroPostController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="micro_post_edit")
+     * @Security("is_granted('edit', microPost)", message="Access denied")
      */
     public function edit(MicroPost $microPost,Request $request)
     {
@@ -83,6 +85,7 @@ class MicroPostController extends AbstractController
      */
     public function delete(MicroPost $microPost)
     {
+        $this->denyAccessUnlessGranted('delete',$microPost);
         $em=$this->getDoctrine()->getManager();
         $em->remove($microPost);
         $em->flush();

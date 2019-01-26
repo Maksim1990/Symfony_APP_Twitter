@@ -42,7 +42,7 @@ class MicroPost
     private $user;
 
     /**
-     * @return mixed
+     * @return User
      */
     public function getUser()
     {
@@ -50,7 +50,7 @@ class MicroPost
     }
 
     /**
-     * @param mixed $user
+     * @param mixed User
      */
     public function setUser($user): void
     {
