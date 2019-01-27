@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\MicroPost;
 use App\Entity\User;
 use App\Form\MicroPostType;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,9 +24,12 @@ class MicroPostController extends AbstractController
      */
     public function index()
     {
+        /** @var User $user */
+        $user=$this->getUser();
+
         $posts = $this->getDoctrine()
             ->getRepository(MicroPost::class)
-            ->findAllDescending();
+            ->findAllByUsers($user->getFollowing());
 
         return $this->render('micro_post/index.html.twig', [
             'posts' => $posts,

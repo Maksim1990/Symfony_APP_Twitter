@@ -24,6 +24,28 @@ class MicroPostRepository extends ServiceEntityRepository
         return $this->findBy(array(), array('id' => 'DESC'));
     }
 
+    //-- EXAMPLE OF QUERY BUILDER
+    public function findAllByUsers($userIds)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb->select('p')
+            ->innerJoin(
+                'App\Entity\User',
+                'u',
+                'WITH',
+                'p.user = u.id'
+            )
+            ->where('u.id IN (:following)')
+            ->setParameter(
+                'following',
+                $userIds
+            )
+            ->orderBy('p.time', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
 
     //-- EXAMPLE OF DQL QUERY
     public function findAllGreaterThanId($id): array
