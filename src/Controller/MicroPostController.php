@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\MicroPost;
+use App\Entity\User;
 use App\Form\MicroPostType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,7 +46,9 @@ class MicroPostController extends AbstractController
     public function add(Request $request, TokenStorageInterface $storage)
     {
         $microPost=new MicroPost();
-        $microPost->setTime(new \DateTime());
+
+        //NOW WE ADD IT IN PRE PERSIST LIFEHOOK
+        //$microPost->setTime(new \DateTime());
 
         //$user= $this->getUser();
         $user= $storage->getToken()->getUser();
@@ -114,6 +117,26 @@ class MicroPostController extends AbstractController
 //            ->find($id);
         return $this->render('micro_post/show.html.twig', [
             'post' => $microPost,
+        ]);
+    }
+
+    /**
+     * @Route("/user/{username}", name="micro_post_user")
+     * @param User $userWIthPosts
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function userPosts(User $userWIthPosts){
+
+        $posts = $this->getDoctrine()
+            ->getRepository(MicroPost::class)
+            ->findBy([
+               'user'=>$userWIthPosts
+            ],
+                ['time'=>'DESC']);
+
+        return $this->render('micro_post/user_posts.html.twig', [
+            'posts' => $posts,
+            'user'=>$userWIthPosts
         ]);
     }
 }
