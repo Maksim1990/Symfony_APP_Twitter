@@ -19,6 +19,21 @@ class MicroPostRepository extends ServiceEntityRepository
         parent::__construct($registry, MicroPost::class);
     }
 
+    public function findAllToArray(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p
+        FROM App\Entity\MicroPost p
+        ORDER BY p.id DESC'
+        );
+        // returns an array of Product objects
+        return $query->getArrayResult();
+
+    }
+
+
     public function findAllDescending()
     {
         return $this->findBy(array(), array('id' => 'DESC'));
@@ -47,7 +62,6 @@ class MicroPostRepository extends ServiceEntityRepository
     }
 
 
-    //-- EXAMPLE OF DQL QUERY
     public function findAllGreaterThanId($id): array
     {
         $entityManager = $this->getEntityManager();

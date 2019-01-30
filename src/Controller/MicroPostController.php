@@ -118,7 +118,7 @@ class MicroPostController extends AbstractController
         $em->flush();
         $this->addFlash('notice', 'Micro post was deleted');
 
-        return   $this->redirectToRoute('micro_post_index');
+        return $this->redirectToRoute('micro_post_user',['username'=>$this->getUser()->getUsername()]);
     }
     /**
      * @Route("/{id}", name="micro_post_show")

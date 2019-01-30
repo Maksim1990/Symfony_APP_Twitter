@@ -1,12 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% for message in app.flashes('notice') %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
-    {% endfor %}
 
+    <a href="{{ path('csv_export')}}" class="btn btn-outline-secondary btn-sm">  Export all posts </a>
+    <a href="{{ path('csv_import')}}" class="btn btn-outline-info btn-sm">  Import </a>
     {% if usersToFollow|length > 0 %}
         <p>You currently do not follow anyone, you might find these users interesting: </p>
 
