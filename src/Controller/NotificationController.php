@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/notification", name="notification")
+ * @Route("/notification")
  */
 class NotificationController extends AbstractController
 {
@@ -28,7 +28,7 @@ class NotificationController extends AbstractController
      */
     public function unreadCount()
     {
-        new JsonResponse([
+        return new JsonResponse([
            'count'=>$this->notificationRepository->findUnseenByUser($this->getUser())
         ]);
     }

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Notification;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -26,7 +27,7 @@ class NotificationRepository extends ServiceEntityRepository
             ->where('n.user=:user')
             ->setParameter('user',$user)
             ->getQuery()
-            ->getScalarResult()
+            ->getSingleScalarResult()
             ;
     }
 }

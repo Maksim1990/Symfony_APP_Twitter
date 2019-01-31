@@ -5,6 +5,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('build/css/app.css') }}">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         {% endblock %}
     </head>
     <body class="bg-light">
@@ -17,6 +18,29 @@
         </main>
         {% block javascripts %}
             <script src="{{ asset('build/js/app.js') }}"></script>
+
+            {% if is_granted('ROLE_USER') %}
+            <script>
+                function FetchNotification() {
+                    fetch(
+                        '{{ path('notification_unread') }}',
+                        {'credentials':'include'}
+                    ).then(function (resp) {
+                        resp.json().then(function (json) {
+                            document.getElementById('notification-count').innerText=json.count;
+
+                            //-- Update notification each time
+                            setTimeout(FetchNotification, 5000);
+                        });
+
+                    }).catch(function (reason) {
+
+                    });
+                }
+
+                FetchNotification();
+            </script>
+            {% endif %}
         {% endblock %}
     </body>
 </html>
