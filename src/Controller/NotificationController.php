@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Notification;
 use App\Repository\NotificationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,5 +45,28 @@ class NotificationController extends AbstractController
                 'user' => $this->getUser(),
             ]),
         ]);
+    }
+
+    /**
+     * @Route("/accept/{id}", name="notification_accept")
+     * @param Notification $notification
+     */
+    public function acknowledge(Notification $notification)
+    {
+        $notification->setSeen(true);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('notification_all');
+    }
+
+    /**
+     * @Route("/accept_all", name="notification_accept_all")
+     */
+    public function acknowledgeAll()
+    {
+        $this->notificationRepository->markAllAsReadByUser($this->getUser());
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('notification_all');
     }
 }

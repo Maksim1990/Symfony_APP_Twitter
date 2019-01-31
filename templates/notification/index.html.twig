@@ -3,11 +3,15 @@
 {% block body %}
 
     <div class="card">
+        {% if notifications|length %}
         <div class="card-body">
             <h5>Unread notifications</h5>
         </div>
 
         <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <a href="{{ path('notification_accept_all') }}" class="btn btn-block btn-outline-danger">Mark all as Read</a>
+            </li>
             {% for notification in notifications %}
 
                 <li class="list-group-item">
@@ -16,9 +20,16 @@
                             {{ notification.likedBy.username }}</a>
                         likes your
                         <a href="{{ path('micro_post_show',{'id':notification.microPost.id}) }}">{{ notification.microPost.text }}</a>
+
+                        <a href="{{ path('notification_accept',{'id':notification.id}) }}" class="btn btn-sm btn-info float-right">OK</a>
                     {% endif %}
                 </li>
             {%  endfor %}
         </ul>
+            {% else %}
+                <div class="card-body">
+                    <p>You have no new notifications!</p>
+                </div>
+        {% endif %}
     </div>
 {% endblock %}
