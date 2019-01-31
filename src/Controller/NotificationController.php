@@ -29,7 +29,20 @@ class NotificationController extends AbstractController
     public function unreadCount()
     {
         return new JsonResponse([
-           'count'=>$this->notificationRepository->findUnseenByUser($this->getUser())
+            'count' => $this->notificationRepository->findUnseenByUser($this->getUser()),
+        ]);
+    }
+
+    /**
+     * @Route("/all", name="notification_all")
+     */
+    public function notifications()
+    {
+        return $this->render('notification/index.html.twig', [
+            'notifications' => $this->notificationRepository->findBy([
+                'seen' => false,
+                'user' => $this->getUser(),
+            ]),
         ]);
     }
 }
