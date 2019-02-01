@@ -7,7 +7,7 @@ class TokenGenerator
 {
     private const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    public function getRandomSecureToken(int $length): string
+    static function getRandomSecureToken(int $length): string
     {
         $maxNumber = strlen(self::ALPHABET);
         $token = '';

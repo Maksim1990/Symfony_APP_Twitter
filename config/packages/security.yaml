@@ -43,6 +43,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
           - { path: ^/(login|register)$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+          - { path: ^/confirm/(\w|\d)+, role: IS_AUTHENTICATED_ANONYMOUSLY }
           #- { path: ^/, role: [ROLE_ADMIN,ROLE_USER] }
           - { path: ^/, role: ROLE_USER }
         # - { path: ^/micro-post, roles: ROLE_USER }

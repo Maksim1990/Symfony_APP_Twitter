@@ -94,6 +94,7 @@ class AppFixtures extends Fixture
             $user->setFullName($userData['fullName']);
             $user->setEmail($userData['email']);
             $user->setRoles($userData['roles']);
+            $user->setEnabled(true);
             $user->setPassword(
                 $this->passwordEncoder->encodePassword(
                     $user,

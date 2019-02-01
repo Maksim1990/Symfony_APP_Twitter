@@ -16,8 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface, \Serializable
 {
 
-    const ROLE_USER='ROLE_USER';
-    const ROLE_ADMIN='ROLE_ADMIN';
+    const ROLE_USER  = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -88,19 +88,54 @@ class User implements UserInterface, \Serializable
      */
     private $postsLiked;
 
+    /**
+     * @ORM\Column(type="string", nullable=true, length=30)
+     */
+    private $confirmationToken;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled;
+
     public function __construct()
     {
-        $this->posts=new ArrayCollection();
-        $this->followers=new ArrayCollection();
-        $this->following=new ArrayCollection();
-        $this->postsLiked=new ArrayCollection();
+        $this->posts      = new ArrayCollection();
+        $this->followers  = new ArrayCollection();
+        $this->following  = new ArrayCollection();
+        $this->postsLiked = new ArrayCollection();
 
-        $this->roles = [self::ROLE_USER];
+        $this->roles   = [self::ROLE_USER];
+        $this->enabled = false;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param mixed $enabled
+     */
+    public function setEnabled($enabled): void
+    {
+        $this->enabled = $enabled;
     }
 
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    /**
+     * @param array $roles
+     */
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
     }
 
     /**
@@ -114,25 +149,9 @@ class User implements UserInterface, \Serializable
     /**
      * @return mixed
      */
-    public function getFollowing()
-    {
-        return $this->following;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getPosts()
     {
         return $this->posts;
-    }
-
-    /**
-     * @param array $roles
-     */
-    public function setRoles(array $roles): void
-    {
-        $this->roles = $roles;
     }
 
     /**
@@ -156,6 +175,14 @@ class User implements UserInterface, \Serializable
         return $this->password;
     }
 
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password): void
+    {
+        $this->password = $password;
+    }
+
     public function getSalt()
     {
         return null;
@@ -164,6 +191,14 @@ class User implements UserInterface, \Serializable
     public function getUsername()
     {
         return $this->username;
+    }
+
+    /**
+     * @param mixed $username
+     */
+    public function setUsername($username): void
+    {
+        $this->username = $username;
     }
 
     public function eraseCredentials()
@@ -176,15 +211,14 @@ class User implements UserInterface, \Serializable
         return serialize([
             $this->id,
             $this->username,
-            $this->password
+            $this->password,
+            $this->enabled,
         ]);
     }
 
     public function unserialize($serialized)
     {
-        list($this->id,
-            $this->username,
-            $this->password) = unserialize($serialized);
+        list($this->id, $this->username, $this->password,$this->enabled) = unserialize($serialized);
     }
 
     /**
@@ -196,14 +230,6 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * @param mixed $email
      */
     public function setEmail($email): void
@@ -212,19 +238,11 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $username
+     * @return mixed
      */
-    public function setUsername($username): void
+    public function getId()
     {
-        $this->username = $username;
-    }
-
-    /**
-     * @param mixed $password
-     */
-    public function setPassword($password): void
-    {
-        $this->password = $password;
+        return $this->id;
     }
 
     /**
@@ -248,10 +266,55 @@ class User implements UserInterface, \Serializable
      */
     public function follow(User $userToFollow): void
     {
-        if($this->getFollowing()->contains($userToFollow)){
+        if ($this->getFollowing()->contains($userToFollow)) {
             return;
         }
 
         $this->getFollowing()->add($userToFollow);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getFollowing()
+    {
+        return $this->following;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    /**
+     * @param mixed $confirmationToken
+     */
+    public function setConfirmationToken($confirmationToken): void
+    {
+        $this->confirmationToken = $confirmationToken;
+    }
+
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
 }
