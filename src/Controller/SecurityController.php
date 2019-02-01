@@ -57,7 +57,7 @@ class SecurityController
     public function confirm(string $token, UserRepository $repository, EntityManagerInterface $entityManager)
     {
         /** @var \App\Entity\User $user */
-        $user=$repository->findBy(['confirmationToken'=>$token]);
+        $user=$repository->findOneBy(['confirmationToken'=>$token]);
 
         if($user != null){
             $user->setEnabled(true);

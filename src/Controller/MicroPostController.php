@@ -6,7 +6,6 @@ use App\Entity\MicroPost;
 use App\Entity\User;
 use App\Form\MicroPostType;
 use App\Repository\UserRepository;
-use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
