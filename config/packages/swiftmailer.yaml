@@ -1,3 +1,10 @@
 swiftmailer:
     url: '%env(MAILER_URL)%'
     spool: { type: 'memory' }
+
+    # Example of using file mail as spool storage
+    # And in order to send following command should be sent
+    # php bin/console swiftmailer:spool:send --env=prod --message-limit=10
+    #spool:
+    #    type: file
+    #    path: '%kernel.project_dir%/var/spool'
