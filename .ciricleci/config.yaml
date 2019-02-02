@@ -1,0 +1,104 @@
+version: 2
+jobs:
+  build:
+    docker:
+    # Specify the version you desire here
+    - image: circleci/php:7.2.4-apache-stretch-node-browsers
+      environment:
+        APP_ENV: test
+        DATABASE_URL: mysql://root:root@127.0.01/symfony_udemy_db
+        MAILER_FROM: mp@micropost.com
+        MAILER_URL: null://localhost
+    - image: circleci/mysql:5.7
+      environment:
+        MYSQL_ROOT_PASSWORD: 'root'
+        MYSQL_DATABASE: symfony_udemy_db
+
+
+    steps:
+    - checkout
+
+    - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
+    - run: sudo docker-php-ext-install zip
+
+    # Download and cache dependencies
+
+    # composer cache
+    - restore_cache:
+        keys:
+        # "composer.lock" can be used if it is committed to the repo
+        - v1-dependencies-{{ checksum "composer.json" }}
+        # fallback to using the latest cache if no exact match is found
+        - v1-dependencies-
+
+    - run: composer install -n --prefer-dist --ignore-platform-reqs
+
+    - save_cache:
+        key: composer-v1-{{ checksum "composer.lock" }}
+        paths:
+        - vendor
+
+    # node cache
+    - restore_cache:
+        keys:
+        - node-v3-{{ checksum "package.json" }}
+        - node-v3-
+    - run: yarn install
+    - save_cache:
+        key: node-v3-{{ checksum "package.json" }}
+        paths:
+        - node_modules
+        - ~/.yarn
+
+    # prepare the database
+    - run: touch storage/testing.sqlite
+
+    - run: php bin/console doctrine:migrations:migrate --no-interaction
+
+    # Create testing environment file
+    - run: cp .env.example .env
+
+    # run tests with phpunit or codecept
+    - run: ./vendor/bin/simple-phpunit
+    #- run: ./vendor/bin/codecept build
+    #- run: ./vendor/bin/codecept run --xml result.xml
+
+    - run: mkdir ./tests/_output
+    - store_test_results:
+        path: ./tests/_output
+    - store_artifacts:
+        path: ./tests/_output
+  deploy:
+    machine:
+      enabled: true
+    steps:
+    # DEACTIVATED DEPLOY TO DEDICATED SHARED HOSTING
+    #- add_ssh_keys:
+    #           fingerprints:
+    #             - "5a:3e:5f:7f:35:1c:26:8b:71:57:92:bf:f4:9b:3e:b9"
+    #- run:
+    #   name: Deploy Over SSH
+    #   command: |
+    #    ssh -t $SSH_USER@$SSH_HOST "cd public_html/inspirecms && git pull origin master"
+    - add_ssh_keys:
+        fingerprints:
+        - "0c:33:a8:8c:40:06:fa:ae:13:c8:63:a6:e7:52:a1:b0"
+    - run:
+        name: Deploy Over SSH to VPS server
+        command: |
+          ssh -t $SSH_USER_VPS@$SSH_HOST_VPS "cd /var/www/html/vps/public_html/twitterBlog/ && git pull origin master && composer install && php bin/console doctrine:migrations:migrate && yarn install && yarn encore production"
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+    - build:
+        filters:
+          branches:
+            only: develop
+    - deploy:
+
+        #requires:
+        #  - build
+        filters:
+          branches:
+            only: master
