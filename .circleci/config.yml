@@ -72,6 +72,7 @@ jobs:
     machine:
       enabled: true
     steps:
+    working_directory: /var/www/html/vps/public_html/twitterBlog/
     # DEACTIVATED DEPLOY TO DEDICATED SHARED HOSTING
     #- add_ssh_keys:
     #           fingerprints:
@@ -86,7 +87,7 @@ jobs:
     - run:
         name: Deploy Over SSH to VPS server
         command: |
-          ssh -t $SSH_USER_VPS@$SSH_HOST_VPS "cd /var/www/html/vps/public_html/twitterBlog/ && git pull origin master && composer install && php bin/console doctrine:migrations:migrate --no-interaction && yarn install && yarn encore production"
+          git pull origin master && composer install && php bin/console doctrine:migrations:migrate --no-interaction && yarn install && yarn encore production
 workflows:
   version: 2
   build-and-deploy:
