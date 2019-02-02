@@ -69,10 +69,10 @@ jobs:
     - store_artifacts:
         path: ./tests/_output
   deploy:
+    working_directory: /var/www/html/vps/public_html/twitterBlog/
     machine:
       enabled: true
     steps:
-    working_directory: /var/www/html/vps/public_html/twitterBlog/
     # DEACTIVATED DEPLOY TO DEDICATED SHARED HOSTING
     #- add_ssh_keys:
     #           fingerprints:
