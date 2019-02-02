@@ -85,8 +85,22 @@ jobs:
         - "0c:33:a8:8c:40:06:fa:ae:13:c8:63:a6:e7:52:a1:b0"
     - run:
         name: Deploy Over SSH to VPS server
-        command: |
-          ssh -t $SSH_USER_VPS@$SSH_HOST_VPS "cd /var/www/html/vps/public_html/twitterBlog/ && git pull origin master && composer install && php bin/console doctrine:migrations:migrate --no-interaction && yarn install && yarn encore production"
+        command: ssh -t $SSH_USER_VPS@$SSH_HOST_VPS "cd /var/www/html/vps/public_html/twitterBlog/"
+    - run:
+        name: Pull latest updates from GitHub
+        command: git pull origin master
+    - run:
+        name: Update composer dependencies
+        command: composer install
+    - run:
+        name: Run app migrations
+        command: php bin/console doctrine:migrations:migrate --no-interaction
+    - run:
+        name: Install Yarn dependencies
+        command: yarn install
+    - run:
+        name: Compile assets
+        command: yarn encore production
 workflows:
   version: 2
   build-and-deploy:
