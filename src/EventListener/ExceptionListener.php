@@ -39,12 +39,12 @@ class ExceptionListener
             $html=$this->twig->render(
                 'exceptions/user_not_enabled.html.twig',[]);
             $response = new Response($html);
-
+            $event->setResponse($response);
         } else {
-            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+           // $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         // sends the modified response object to the event
-        $event->setResponse($response);
+        //$event->setResponse($response);
     }
 }

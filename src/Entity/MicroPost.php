@@ -6,6 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MicroPostRepository")
  * @ORM\Table(name="micro_post")
+ * @ORM\HasLifecycleCallbacks()
  */
 class MicroPost
 {
@@ -111,5 +112,13 @@ class MicroPost
        if( !$this->likedBy->contains($user)){
            $this->likedBy->add($user);
        }
+    }
+
+    /**
+     * @ORM\PreFlush()
+     */
+    public function setDefaultTime(): void
+    {
+        $this->time = new \DateTime();
     }
 }
