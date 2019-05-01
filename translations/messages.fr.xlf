@@ -10,6 +10,10 @@
                 <source>Sign out</source>
                 <target>Déconnexion</target>
             </trans-unit>
+            <trans-unit id="menu.register">
+                <source>Registerer</source>
+                <target>Registerer</target>
+            </trans-unit>
             <trans-unit id="menu.notifications">
                 <source>Notifications</source>
                 <target>Notifications</target>

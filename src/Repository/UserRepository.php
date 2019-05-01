@@ -22,21 +22,25 @@ class UserRepository extends ServiceEntityRepository
 
     public function findAllWithMoreThan5Posts()
     {
-        return $this->getFindAllWithMoreThan5PostsQuery()
+        return $this->getFindAllWithMoreThan5PostsQuery(5)
             ->getQuery()
             ->getResult();
     }
 
     public function findAllWithMoreThan5PostsExceptUser(User $user)
     {
-        return $this->getFindAllWithMoreThan5PostsQuery()
-            ->andHaving('u != :user')
+        $users=$this->getFindAllWithMoreThan5PostsQuery(5);
+        if(empty($users->getQuery()->getResult())){
+            $users=$this->getFindAllWithMoreThan5PostsQuery(0);
+        }
+        return $users->andHaving('u != :user')
             ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
     }
 
-    private function getFindAllWithMoreThan5PostsQuery(): QueryBuilder
+
+    private function getFindAllWithMoreThan5PostsQuery($count): QueryBuilder
     {
         $qb = $this->createQueryBuilder('u');
 
@@ -46,34 +50,6 @@ class UserRepository extends ServiceEntityRepository
                 'mp'
             )
             ->groupBy('u')
-            ->having('count(mp) > 5');
+            ->having('count(mp) > '.$count);
     }
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
