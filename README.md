@@ -6,7 +6,7 @@
 - Full app development is proceeded in **[Laradock](https://laradock.io/)** environment 
 - CI/CD is integrated with **[CircleCI](https://circleci.com/)**
 
-# CHECK ALSO USEFUL [APP DEMO SCREENS](https://github.com/Maksim1990/Golang_REST_API__JWT_App/blob/develop/API_GUIDE.md)
+# CHECK ALSO USEFUL [APP DEMO SCREENS](https://github.com/Maksim1990/Symfony_APP_Twitter/blob/Build_app_guide/public/github/APP_GUIDE.md)
 
 ### How To Run App in **Laradock** environment
 
