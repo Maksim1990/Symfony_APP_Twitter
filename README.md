@@ -1,4 +1,4 @@
-# Symfony 4 Twitter like Micropost application
+# Symfony 4 Twitter like Micro Blog application
 
 ### About Application
 - App is based on PHP 7.2 and Symfony 4 framework
