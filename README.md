@@ -5,6 +5,7 @@
 - DB in develop branch is **MySQL**
 - Full app development is proceeded in **[Laradock](https://laradock.io/)** environment 
 - CI/CD is integrated with **[CircleCI](https://circleci.com/)**
+- Integrated functionality of **import/export** micro blog posts
 
 # CHECK ALSO USEFUL [APP DEMO SCREENS](https://github.com/Maksim1990/Symfony_APP_Twitter/blob/Build_app_guide/public/github/APP_GUIDE.md)
 
