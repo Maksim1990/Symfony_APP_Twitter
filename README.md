@@ -3,7 +3,7 @@
 ### About Application
 - App is based on PHP 7.2 and Symfony 4 framework
 - DB in develop branch is **MySQL**
-- App support **[Docker](https://www.docker.com/)** development environment
+- App supports **[Docker](https://www.docker.com/)** development environment
 - CI/CD is integrated with **[CircleCI](https://circleci.com/)**
 - Integrated functionality of **import/export** micro blog posts
 
