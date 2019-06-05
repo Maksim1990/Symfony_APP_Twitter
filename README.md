@@ -41,4 +41,3 @@
 App is available on ``8310`` port
 --
     http://127.0.0.1:8310
-```
